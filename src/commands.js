@@ -1,5 +1,9 @@
 const commander = require('commander');
-const inquirer = require('inquirer');
+const inquirer  = require('inquirer');
+const CLI       = require('clui');
+const _         = require('lodash');
+
+const Spinner = CLI.Spinner;
 
 module.exports = git => {
     commander
@@ -7,15 +11,17 @@ module.exports = git => {
         .description('Git command line tool');
 
     commander
-        .command('status')
+        .command('')
         .alias('st')
         .description('Select files to commit')
         .action(() => git.status((err, res) => {
+            // console.log(res);
+            const files = _.concat(res.not_added, res.modified);
             inquirer.prompt([{
                 type: 'checkbox',
                 name: 'untrackedFiles',
                 message: 'Add untracked files to stage:',
-                choices: res.not_added.map(el => el),
+                choices: files,
             }])
             .then(files => {
                 git.add(files.untrackedFiles, () => {
@@ -34,7 +40,10 @@ module.exports = git => {
                 name: 'commitMessage',
                 message: 'Enter a commit message:',
             }]).then((resObj) => {
+                const spinner = new Spinner('Pushing your changes to origin/master');
+                spinner.start();
                 git.commit(resObj.commitMessage, () => {
+                    spinner.stop();
                     console.info('Commit done.');
                 }).push('origin', 'master');
             });

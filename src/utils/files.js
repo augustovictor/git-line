@@ -5,4 +5,12 @@ module.exports = {
     getCurrentDirectoryBase: function () {
         return path.basename(process.cwd());
     },
+
+    directoryExists: function (filePath) {
+        try {
+            return fs.statSync(filePath).isDirectory();
+        } catch (e) {
+            return false;
+        }
+    }
 };
