@@ -40,12 +40,13 @@ module.exports = git => {
                 name: 'commitMessage',
                 message: 'Enter a commit message:',
             }]).then((resObj) => {
-                const spinner = new Spinner('Pushing your changes to origin/master');
-                spinner.start();
                 git.commit(resObj.commitMessage, () => {
+                    console.info('Commit ok.');
+                    const spinner = new Spinner('Pushing your changes to origin/master');
+                    spinner.start();
+                }).push('origin', 'master', () => {
                     spinner.stop();
-                    console.info('Commit done.');
-                }).push('origin', 'master');
+                });
             });
         })
 
