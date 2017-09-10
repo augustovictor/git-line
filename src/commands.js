@@ -20,28 +20,32 @@ module.exports = git => {
             const files = _.concat(res.not_added, res.modified);
             inquirer.prompt([{
                 type: 'checkbox',
-                name: 'untrackedFiles',
-                message: 'Add untracked files to stage:',
+                name: 'files',
+                message: 'Add files to stage:',
                 choices: files,
             }])
             .then(files => {
-                git.add(files.untrackedFiles, () => {
-                    console.log('Files added.')
+                git.add(files.files, () => {
+                    // console.log('Files added.')
                 });
+                // TODO: Remove files
             })
             .then(() => 
                 inquirer.prompt([{
                     type: 'confirm',
-                    name: 'commitQuestion',
+                    name: 'answer',
                     message: 'Would you like to commit added files?',
                     default: true
                 }])
             )
-            .then(commitQuestionResponse => inquirer.prompt([{
-                type: 'input',
-                name: 'message',
-                message: 'Enter a commit message:',
-            }]))
+            .then(commitQuestionResponse => {
+                    if(!commitQuestionResponse.answer) return process.exit();
+                    return inquirer.prompt([{
+                    type: 'input',
+                    name: 'message',
+                    message: 'Enter a commit message:',
+                }])}
+            )
             .then(commitMessageObj => {
                 git.commit(commitMessageObj.message, () => {
                     console.info('Commit ok.');
@@ -49,8 +53,10 @@ module.exports = git => {
                     spinner.start();
                 }).push('origin', 'master', () => {
                     spinner.stop();
-                    console.info('Changes pushed to origin/master');
+                    console.info('Changes pushed to origin/master successfully =D.');
                 });
+            }).catch(e => {
+                console.error(e);
             });
         }));
     
