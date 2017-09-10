@@ -4,6 +4,7 @@ const CLI       = require('clui');
 const _         = require('lodash');
 
 const Spinner = CLI.Spinner;
+const spinner = new Spinner();
 
 module.exports = git => {
     commander
@@ -42,7 +43,7 @@ module.exports = git => {
             }]).then((resObj) => {
                 git.commit(resObj.commitMessage, () => {
                     console.info('Commit ok.');
-                    const spinner = new Spinner('Pushing your changes to origin/master');
+                    spinner.message('Pushing your changes to origin/master');
                     spinner.start();
                 }).push('origin', 'master', () => {
                     spinner.stop();
