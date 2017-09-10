@@ -47,6 +47,7 @@ module.exports = git => {
                     spinner.start();
                 }).push('origin', 'master', () => {
                     spinner.stop();
+                    console.info('Changes pushed to origin/master');
                 });
             });
         })
