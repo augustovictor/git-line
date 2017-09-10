@@ -28,6 +28,29 @@ module.exports = git => {
                 git.add(files.untrackedFiles, () => {
                     console.log('Files added.')
                 });
+            })
+            .then(() => 
+                inquirer.prompt([{
+                    type: 'confirm',
+                    name: 'commitQuestion',
+                    message: 'Would you like to commit added files?',
+                    default: true
+                }])
+            )
+            .then(commitQuestionResponse => inquirer.prompt([{
+                type: 'input',
+                name: 'message',
+                message: 'Enter a commit message:',
+            }]))
+            .then(commitMessageObj => {
+                git.commit(commitMessageObj.message, () => {
+                    console.info('Commit ok.');
+                    spinner.message('Pushing your changes to origin/master');
+                    spinner.start();
+                }).push('origin', 'master', () => {
+                    spinner.stop();
+                    console.info('Changes pushed to origin/master');
+                });
             });
         }));
     
