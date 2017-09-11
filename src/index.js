@@ -19,7 +19,7 @@ if (!files.directoryExists('.git')) {
 }
 
 clear();
-// const greeting = figlet.textSync('Git - Line', { horizontalLayout: 'full' });
-// console.log(chalk.blue(greeting));
+// const greeting = figlet.textSync('Git Line', { horizontalLayout: 'full' });
+// console.log(chalk.red(greeting));
 
 const commands = require('./commands')(git);

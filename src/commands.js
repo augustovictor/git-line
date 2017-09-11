@@ -25,7 +25,7 @@ module.exports = git => {
             let pointer = 0;
             
             git.diff([files[pointer]], (err, res) => {
-                console.log(chalk.blue(`\n\n\n DIFF - FILE: ${files[pointer]}\n`));
+                console.log(chalk.black.bgGreen.bold(`\n\n\n DIFF - FILE: ${files[pointer]} \n`));
                 console.log(res);
             });
             
@@ -50,7 +50,7 @@ module.exports = git => {
                 }
                 if (key.name === 'up' || key.name === 'down' || key.name === 'space') {
                     git.diff([files[pointer]], (err, res) => {
-                    console.log(`\n\n\n DIFF - FILE: ${files[pointer]}\n`);
+                        console.log(chalk.black.bgGreen.bold(`\n\n\n DIFF - FILE: ${files[pointer]} \n`));
                         console.log(res);
                     });
                 }
